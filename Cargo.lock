@@ -1483,26 +1483,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rest_api"
-version = "0.1.0"
-dependencies = [
- "actix-rt",
- "actix-web",
- "chrono",
- "diesel",
- "diesel_migrations",
- "dotenv",
- "env_logger",
- "lazy_static",
- "listenfd",
- "log",
- "r2d2",
- "serde",
- "serde_json",
- "uuid",
-]
-
-[[package]]
 name = "rustc-demangle"
 version = "0.1.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1608,6 +1588,26 @@ dependencies = [
  "cfg-if 1.0.0",
  "libc",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "spiking_actix"
+version = "0.1.0"
+dependencies = [
+ "actix-rt",
+ "actix-web",
+ "chrono",
+ "diesel",
+ "diesel_migrations",
+ "dotenv",
+ "env_logger",
+ "lazy_static",
+ "listenfd",
+ "log",
+ "r2d2",
+ "serde",
+ "serde_json",
+ "uuid",
 ]
 
 [[package]]

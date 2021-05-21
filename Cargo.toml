@@ -1,5 +1,5 @@
 [package]
-name = "rest_api"
+name = "spiking_actix"
 version = "0.1.0"
 authors = ["Peter Keenan <keenan@posteo.net>"]
 edition = "2018"
