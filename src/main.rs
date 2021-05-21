@@ -1,22 +1,28 @@
 #[macro_use]
 extern crate log;
 
+#[macro_use]
+extern crate diesel;
+
+#[macro_use]
+extern crate diesel_migrations;
+
 use actix_web::{App, HttpServer};
 use dotenv::dotenv;
 use listenfd::ListenFd;
 use std::env;
 
+mod api_error;
+mod db;
+mod schema;
 mod user;
-
-// #[get("/")]
-// async fn index() -> impl Responder {
-//     HttpResponse::Ok().body("Hello world!")
-// }
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
     env_logger::init();
+
+    db::init();
 
     let mut listenfd = ListenFd::from_env();
     let mut server = HttpServer::new(|| App::new().configure(user::init_routes));

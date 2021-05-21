@@ -1,48 +1,40 @@
-use crate::user::User;
+use crate::api_error::ApiError;
+use crate::user::{User, UserMessage};
 use actix_web::{delete, get, post, put, web, HttpResponse, Responder};
 use serde_json::json;
+use uuid::Uuid;
 
 #[get("/users")]
-async fn find_all() -> impl Responder {
-  HttpResponse::Ok().json(vec![
-    User {
-      id: 1,
-      email: "dummy-email@dummy.com".to_string(),
-      name: "Dummy Mister".to_string(),
-      // _age: 19,
-    },
-    User {
-      id: 2,
-      email: "bigger-dummy@dummy.com".to_string(),
-      name: "Dummy Misssusss".to_string(),
-      // _age: 21,
-    },
-  ])
+async fn find_all() -> Result<HttpResponse, ApiError> {
+  let users = User::find_all()?;
+  Ok(HttpResponse::Ok().json(users))
 }
 
 #[get("/users/{id}")]
-async fn find() -> impl Responder {
-  HttpResponse::Ok().json(User {
-    id: 1,
-    email: "dummy-email@dummy.com".to_string(),
-    name: "Dummy Mister".to_string(),
-    // _age: 19,
-  })
+async fn find(id: web::Path<Uuid>) -> Result<HttpResponse, ApiError> {
+  let user = User::find(id.into_inner())?;
+  Ok(HttpResponse::Ok().json(user))
 }
 
 #[post("/users")]
-async fn create(user: web::Json<User>) -> impl Responder {
-  HttpResponse::Created().json(user.into_inner())
+async fn create(user: web::Json<UserMessage>) -> Result<HttpResponse, ApiError> {
+  let user = User::create(user.into_inner())?;
+  Ok(HttpResponse::Ok().json(user))
 }
 
 #[put("/users/{id}")]
-async fn update(user: web::Json<User>) -> impl Responder {
-  HttpResponse::Ok().json(user.into_inner())
+async fn update(
+  id: web::Path<Uuid>,
+  user: web::Json<UserMessage>,
+) -> Result<HttpResponse, ApiError> {
+  let user = User::update(id.into_inner(), user.into_inner())?;
+  Ok(HttpResponse::Ok().json(user))
 }
 
 #[delete("/users/{id}")]
-async fn delete() -> impl Responder {
-  HttpResponse::Ok().json(json!({"msg":"Successfully deleted"}))
+async fn delete(id: web::Path<Uuid>) -> Result<HttpResponse, ApiError> {
+  let num_deleted = User::delete(id.into_inner())?;
+  Ok(HttpResponse::Ok().json(json!({ "deleted": num_deleted })))
 }
 
 pub fn init_routes(cfg: &mut web::ServiceConfig) {
