@@ -10,8 +10,8 @@ use uuid::Uuid;
 #[derive(Serialize, Deserialize, AsChangeset)]
 #[table_name = "user"]
 pub struct UserMessage {
-  pub id: i32,
   pub email: String,
+  pub password: String,
   pub name: String,
 }
 
